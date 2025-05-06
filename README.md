@@ -1,4 +1,4 @@
-# 📰 The Celestern Times Admin Panel
+# 📰 The Celestern Times 
 
 **The Celestern Times** adalah portal berita digital modern yang dibangun menggunakan teknologi web terkini. Proyek ini terdiri dari dua bagian utama:
 
