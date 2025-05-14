@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import { Lock } from "lucide-react"; // Pakai icon kunci
+import { Lock } from "lucide-react"; 
 
 const AksesDitolak = () => {
   return (

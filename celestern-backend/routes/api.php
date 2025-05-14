@@ -1,5 +1,8 @@
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\KategoriController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UploadController;
+use App\Http\Controllers\ModerasiKomentarController;
 
 Route::prefix('berita')->group(function () {
 Route::get('/', [BeritaController::class, 'index']);
@@ -15,3 +18,9 @@ Route::get('/kategori', [KategoriController::class, 'index']);
 Route::post('/kategori', [KategoriController::class, 'store']);
 Route::put('/kategori/{id}', [KategoriController::class, 'update']);
 Route::delete('/kategori/{id}', [KategoriController::class, 'destroy']);
+Route::post('/upload-gambar', [UploadController::class, 'upload']);Route::middleware(['auth:sanctum',
+'admin'])->prefix('komentar')->group(function () {
+Route::get('/', [ModerasiKomentarController::class, 'index']);
+Route::patch('/{id}/status', [ModerasiKomentarController::class, 'updateStatus']);
+Route::delete('/{id}', [ModerasiKomentarController::class, 'destroy']);
+});
