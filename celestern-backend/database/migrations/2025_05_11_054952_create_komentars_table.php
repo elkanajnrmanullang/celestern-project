@@ -4,24 +4,25 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateKomentarsTable extends Migration
 {
-    public function up(): void
+    public function up()
     {
         Schema::create('komentars', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_pengguna');
+            $table->string('nama_user');
             $table->text('komentar');
             $table->unsignedBigInteger('berita_id');
-            $table->enum('status', ['TAMPIL', 'SPAM', 'TERSEMBUNYI'])->default('TAMPIL');
+            $table->date('tanggal_komentar');
+            $table->enum('status', ['tampil', 'spam', 'tersembunyi'])->default('tampil');
             $table->timestamps();
 
             $table->foreign('berita_id')->references('id')->on('beritas')->onDelete('cascade');
         });
     }
 
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('komentars');
     }
-};
+}
