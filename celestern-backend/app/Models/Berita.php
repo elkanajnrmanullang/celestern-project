@@ -9,6 +9,7 @@ class Berita extends Model
 {
     use HasFactory;
 
+    protected $table = 'beritas'; // Pastikan nama tabel cocok
     protected $fillable = [
         'judul',
         'slug',
@@ -19,22 +20,16 @@ class Berita extends Model
         'isi',
         'status',
         'tanggal_terbit',
-        'views',
+        'views'
     ];
 
-    /**
-     * Relasi: Satu berita memiliki banyak komentar.
-     */
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class, 'kategori', 'id');
+    }
+
     public function komentars()
     {
         return $this->hasMany(Komentar::class);
     }
-
-    /**
-     * (Optional) Relasi ke kategori, jika ada tabel dan model kategori.
-     * public function kategori()
-     * {
-     *     return $this->belongsTo(Kategori::class, 'kategori', 'id');
-     * }
-     */
 }

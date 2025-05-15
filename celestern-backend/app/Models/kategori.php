@@ -1,14 +1,19 @@
+<?php
+
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Berita;
 
 class Kategori extends Model
 {
-protected $fillable = ['nama'];
+    use HasFactory;
 
-public function berita()
-{
-return $this->hasMany(Berita::class, 'kategori', 'nama');
-}
+    protected $table = 'kategoris'; // Pastikan nama tabel di database cocok
+    protected $fillable = ['nama'];
+
+    public function berita()
+    {
+        return $this->hasMany(Berita::class);
+    }
 }

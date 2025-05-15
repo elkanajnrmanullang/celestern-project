@@ -6,7 +6,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const login = (username, password) => {
-    // Dummy login logic
     if ((username === "admin" && password === "admin123") || (username === "jurnalis" && password === "jurnalis123")) {
       const role = username === "admin" ? "admin" : "jurnalis";
       setUser({ username, role });
@@ -27,6 +26,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);

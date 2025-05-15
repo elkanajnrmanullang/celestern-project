@@ -5,23 +5,15 @@ import Dashboard from "./pages/Dashboard";
 import ModerasiKomentar from "./pages/ModerasiKomentar";
 import AksesDitolak from "./pages/AksesDitolak";
 
-import { useAuth } from "./hooks/useAuth";
-
 function App() {
-  const { user } = useAuth();
-
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
-
-        <Route
-          path="/admin/moderasi-komentar"
-          element={
-            user?.role === "admin" ? <ModerasiKomentar /> : <AksesDitolak />
-          }
-        />
+        <Route path="/admin/moderasi-komentar" element={<ModerasiKomentar />} />
+        <Route path="/akses-ditolak" element={<AksesDitolak />} />
+        <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
     </Router>
   );
