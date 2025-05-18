@@ -16,7 +16,8 @@ class KomentarController extends Controller
             $query->where('status', $status);
         }
 
-        return $query->paginate(10);
+        return response()->json($query->get());
+
     }
 
     public function update(Request $request, $id)

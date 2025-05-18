@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'paths' => ['api/*'], // Menentukan jalur API yang dapat menerima CORS
+    'paths' => ['api/*', 'sanctum/csrf-cookie'], // Menentukan jalur API yang dapat menerima CORS
 
     'allowed_methods' => ['*'], // Semua metode HTTP diizinkan
 

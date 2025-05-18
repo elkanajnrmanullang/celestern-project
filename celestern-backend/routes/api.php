@@ -36,9 +36,4 @@ Route::delete('/kategori/{id}', [KategoriController::class, 'destroy']);
 Route::post('/upload-gambar', [UploadController::class, 'upload']);
 
 // 💬 Route Komentar (sementara TANPA middleware, agar bisa langsung diuji di frontend)
-Route::prefix('komentar')->group(function () {
-    Route::get('/', [KomentarController::class, 'index']);
-    Route::post('/', [KomentarController::class, 'store']);
-    Route::patch('/{id}', [KomentarController::class, 'update']);
-    Route::delete('/{id}', [KomentarController::class, 'destroy']);
-});
+Route::get('/komentar', [KomentarController::class, 'index']);

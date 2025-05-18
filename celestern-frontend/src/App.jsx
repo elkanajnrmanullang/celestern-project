@@ -13,7 +13,6 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/admin/moderasi-komentar" element={<ModerasiKomentar />} />
         <Route path="/akses-ditolak" element={<AksesDitolak />} />
-        <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
     </Router>
   );
