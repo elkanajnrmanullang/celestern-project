@@ -15,7 +15,8 @@ class Komentar extends Model
     ];
 
     public function berita()
-    {
-        return $this->belongsTo(Berita::class);
-    }
+{
+    return $this->belongsTo(Berita::class);
+}
+
 }

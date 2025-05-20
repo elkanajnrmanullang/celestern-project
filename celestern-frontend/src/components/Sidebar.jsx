@@ -98,13 +98,22 @@ const Sidebar = () => {
           </button>
           {openMenus["pengguna"] && (
             <div className="ml-10 flex flex-col space-y-1 text-gray-600">
-              <button className="text-left hover:text-black">
+              <button
+                onClick={() => navigate("/admin/pengguna/daftar")}
+                className="text-left hover:text-black"
+              >
                 Daftar Pengguna
               </button>
-              <button className="text-left hover:text-black">
+              <button
+                onClick={() => navigate("/admin/pengguna/tambah")}
+                className="text-left hover:text-black"
+              >
                 Tambah Admin/Jurnalis
               </button>
-              <button className="text-left hover:text-black">
+              <button
+                onClick={() => navigate("/admin/pengguna/akses")}
+                className="text-left hover:text-black"
+              >
                 Pengaturan Akses
               </button>
             </div>
@@ -128,13 +137,22 @@ const Sidebar = () => {
           </button>
           {openMenus["statistik"] && (
             <div className="ml-10 flex flex-col space-y-1 text-gray-600">
-              <button className="text-left hover:text-black">
+              <button
+                onClick={() => navigate("/admin/statistik/ringkasan")}
+                className="text-left hover:text-black"
+              >
                 Ringkasan Statistik
               </button>
-              <button className="text-left hover:text-black">
+              <button
+                onClick={() => navigate("/admin/statistik/berita")}
+                className="text-left hover:text-black"
+              >
                 Statistik Berita
               </button>
-              <button className="text-left hover:text-black">
+              <button
+                onClick={() => navigate("/admin/statistik/jurnalis")}
+                className="text-left hover:text-black"
+              >
                 Statistik Jurnalis
               </button>
             </div>

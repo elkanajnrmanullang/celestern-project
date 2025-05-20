@@ -48,3 +48,11 @@ Route::prefix('komentar')->group(function () {
     Route::get('/pengaturan', [CommentSettingController::class, 'index']);
     Route::post('/pengaturan', [CommentSettingController::class, 'update']);
 });
+
+use App\Http\Controllers\StatistikController;
+
+Route::prefix('statistik')->group(function () {
+    Route::get('/ringkasan', [StatistikController::class, 'ringkasan']);
+    Route::get('/berita', [StatistikController::class, 'statistikBerita']);
+    Route::get('/jurnalis', [StatistikController::class, 'statistikJurnalis']);
+});
