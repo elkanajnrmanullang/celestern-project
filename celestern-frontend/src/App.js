@@ -10,7 +10,8 @@ import TambahBerita from "./pages/berita/TambahBerita";
 import DaftarBerita from "./pages/berita/DaftarBerita";
 import JadwalTayang from "./pages/berita/JadwalTayang";
 import KategoriBerita from "./pages/berita/KategoriBerita";
-import ModerasiKomentar from "./pages/ModerasiKomentar"; // ✅ Tambahkan ini
+import ModerasiKomentar from "./pages/ModerasiKomentar";
+import PengaturanKomentar from "./pages/PengaturanKomentar";
 
 function App() {
   return (
@@ -28,6 +29,11 @@ function App() {
                 <Dashboard />
               </ProtectedRoute>
             }
+          />
+
+          <Route
+            path="/admin/pengaturan-komentar"
+            element={<PengaturanKomentar />}
           />
 
           <Route

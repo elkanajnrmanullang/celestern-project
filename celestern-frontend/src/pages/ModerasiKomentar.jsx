@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
+import axios from "axios";
 
 const STATUS_FILTERS = ["semua", "tampil", "spam", "tersembunyi"];
 const ITEMS_PER_PAGE = 30;
@@ -11,6 +12,13 @@ export default function ModerasiKomentar() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
+  const [pengaturan, setPengaturan] = useState({
+    allow_anonymous: false,
+    auto_approve: false,
+    ai_filter: false,
+  });
+
+  // Fetch komentar dummy
   useEffect(() => {
     const dummyData = Array.from({ length: 45 }, (_, i) => ({
       id: i + 1,
@@ -18,7 +26,7 @@ export default function ModerasiKomentar() {
       isi: "Semua komentar akan ditampilkan disini apapun itu",
       berita: {
         id: 1,
-        judul: "Judul Berita Hari Ini"
+        judul: "Judul Berita Hari Ini",
       },
       tanggal: "8 April 2025",
       status: i % 3 === 0 ? "tampil" : i % 3 === 1 ? "spam" : "tersembunyi",
@@ -27,6 +35,23 @@ export default function ModerasiKomentar() {
     setKomentars(dummyData);
     setLoading(false);
   }, []);
+
+  // Fetch pengaturan sistem komentar
+  useEffect(() => {
+    axios.get("http://localhost:8000/api/komentar/pengaturan").then((res) => {
+      setPengaturan(res.data);
+    });
+  }, []);
+
+  const handleChangePengaturan = (e) => {
+    setPengaturan({ ...pengaturan, [e.target.name]: e.target.checked });
+  };
+
+  const handleSimpanPengaturan = () => {
+    axios
+      .post("http://localhost:8000/api/komentar/pengaturan", pengaturan)
+      .then(() => alert("Pengaturan berhasil disimpan."));
+  };
 
   const handleAction = (id, status) => {
     setKomentars((prev) =>
@@ -51,14 +76,15 @@ export default function ModerasiKomentar() {
     currentPage * ITEMS_PER_PAGE
   );
 
-  if (loading) return <p style={{ color: "white" }}>Memuat komentar...</p>;
+  if (loading) return <p className="text-white">Memuat komentar...</p>;
 
   return (
     <div>
       <Header />
       <Sidebar />
-      <div className="ml-64 mt-20 p-6">
-        <h2 className="text-xl font-bold mb-4">Moderasi Komentar</h2>
+      <div className="ml-64 mt-20 p-6 text-black">
+        {/* SECTION 1: Moderasi Komentar */}
+        <h2 className="text-xl font-bold mb-4">💬 Moderasi Komentar</h2>
 
         <div className="flex gap-2 mb-4">
           {STATUS_FILTERS.map((status) => (
@@ -66,8 +92,8 @@ export default function ModerasiKomentar() {
               key={status}
               className={`px-4 py-1 rounded ${
                 filterStatus === status
-                  ? "bg-black text-white"
-                  : "bg-gray-200"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 text-black"
               }`}
               onClick={() => setFilterStatus(status)}
             >
@@ -76,7 +102,7 @@ export default function ModerasiKomentar() {
           ))}
         </div>
 
-        <table className="w-full text-left border border-gray-300">
+        <table className="w-full text-left border border-gray-300 bg-white text-black">
           <thead>
             <tr className="bg-gray-100">
               <th className="p-2 border">Nama Pengguna</th>
@@ -153,6 +179,49 @@ export default function ModerasiKomentar() {
               {num}
             </button>
           ))}
+        </div>
+
+        {/* SECTION 2: Pengaturan Sistem Komentar */}
+        <div className="mt-5 p-4 rounded-xl shadow-md">
+          <h2 className="text-xl font-bold mb-4">⚙️ Pengaturan Komentar</h2>
+          <div className="space-y-3">
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="allow_anonymous"
+                checked={pengaturan.allow_anonymous}
+                onChange={handleChangePengaturan}
+              />
+              <span>Izinkan Komentar Anonim</span>
+            </label>
+
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="auto_approve"
+                checked={pengaturan.auto_approve}
+                onChange={handleChangePengaturan}
+              />
+              <span>Komentar Langsung Tampil (Auto-Approve)</span>
+            </label>
+
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="ai_filter"
+                checked={pengaturan.ai_filter}
+                onChange={handleChangePengaturan}
+              />
+              <span>Gunakan AI Filter (Perspective API)</span>
+            </label>
+
+            <button
+              onClick={handleSimpanPengaturan}
+              className="bg-blue-500 text-white px-4 py-2 mt-4 rounded hover:bg-blue-600"
+            >
+              Simpan Pengaturan
+            </button>
+          </div>
         </div>
       </div>
     </div>
