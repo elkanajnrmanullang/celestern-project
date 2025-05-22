@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
+
+//UNTUL REAL - TIME DATA
 // import axios from "axios";
+
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -37,7 +40,7 @@ export default function StatistikJurnalis() {
         komentar: 15,
       },
       {
-        nama: "Adelia Putri",
+        nama: "Grace Kasih",
         artikel_terbaik: { judul: "Kecerdasan Buatan dan UMKM" },
         view: 6400,
         avg_view: 3200,
