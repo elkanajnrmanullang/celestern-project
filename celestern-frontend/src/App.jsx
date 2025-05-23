@@ -17,8 +17,8 @@ import StatistikBerita from "./pages/statistik/StatistikBerita";
 import StatistikJurnalis from "./pages/statistik/StatistikJurnalis";
 
 // Pages Publik (Portal)
-import Home from "./public-pages/Home";
-import Detail from "./public-pages/Detail";
+// import Home from "./public-pages/Home";
+// import Detail from "./public-pages/Detail";
 
 function App() {
   return (
@@ -26,8 +26,8 @@ function App() {
       <Router>
         <Routes>
           {/* Portal Publik */}
-          <Route path="/" element={<Home />} />
-          <Route path="/berita/:slug" element={<Detail />} />
+          {/* <Route path="/" element={<Home />} />
+          <Route path="/berita/:slug" element={<Detail />} /> */}
 
           {/* Admin Panel */}
           <Route path="/login" element={<Login />} />
@@ -61,7 +61,7 @@ function App() {
             <ProtectedRoute><StatistikJurnalis /></ProtectedRoute>
           } />
 
-          <Route path="/kategori/:slug" element={<Home />} />
+          {/* <Route path="/kategori/:slug" element={<Home />} /> */}
 
 
           {/* Fallback */}
