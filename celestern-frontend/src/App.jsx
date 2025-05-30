@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import { Navigate } from "react-router-dom";
 
 // Pages Admin
 import Login from "./pages/Login";
@@ -65,6 +66,7 @@ function App() {
 
 
           {/* Fallback */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="*" element={<div>404 - Halaman tidak ditemukan</div>} />
         </Routes>
       </Router>
