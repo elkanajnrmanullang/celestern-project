@@ -1,25 +1,38 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
 import ProtectedRoute from "./auth/ProtectedRoute";
-import { Navigate } from "react-router-dom";
 
 // Pages Admin
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import AksesDitolak from "./pages/AksesDitolak";
+
+// Manajemen Berita
 import TambahBerita from "./pages/berita/TambahBerita";
 import DaftarBerita from "./pages/berita/DaftarBerita";
 import KategoriBerita from "./pages/berita/KategoriBerita";
 import JadwalTayang from "./pages/berita/JadwalTayang";
+
+// Moderasi & Statistik
 import ModerasiKomentar from "./pages/ModerasiKomentar";
 import RingkasanStatistik from "./pages/statistik/RingkasanStatistik";
 import StatistikBerita from "./pages/statistik/StatistikBerita";
 import StatistikJurnalis from "./pages/statistik/StatistikJurnalis";
 
-// Pages Publik (Portal)
-// import Home from "./public-pages/Home";
-// import Detail from "./public-pages/Detail";
+// Monetisasi & Iklan
+import SlotIklan from "./pages/admin/iklan/SlotIklan";
+import IntegrasiAdSense from "./pages/admin/iklan/IntegrasiAdSense";
+import StatistikIklan from "./pages/admin/iklan/StatistikIklan";
+
+//Keamanan dan Back Up
+import KeamananSistem from "./pages/admin/keamanan/KeamananSistem";
+import BackupRestore from "./pages/admin/keamanan/BackupRestore";
 
 function App() {
   return (
@@ -30,42 +43,116 @@ function App() {
           {/* <Route path="/" element={<Home />} />
           <Route path="/berita/:slug" element={<Detail />} /> */}
 
-          {/* Admin Panel */}
+          {/* Auth & Akses */}
           <Route path="/login" element={<Login />} />
           <Route path="/akses-ditolak" element={<AksesDitolak />} />
 
-          <Route path="/dashboard" element={
-            <ProtectedRoute><Dashboard /></ProtectedRoute>
-          } />
-          <Route path="/berita/tambah" element={
-            <ProtectedRoute><TambahBerita /></ProtectedRoute>
-          } />
-          <Route path="/berita/daftar" element={
-            <ProtectedRoute><DaftarBerita /></ProtectedRoute>
-          } />
-          <Route path="/berita/kategori" element={
-            <ProtectedRoute><KategoriBerita /></ProtectedRoute>
-          } />
-          <Route path="/berita/jadwal" element={
-            <ProtectedRoute><JadwalTayang /></ProtectedRoute>
-          } />
-          <Route path="/admin/moderasi-komentar" element={
-            <ProtectedRoute><ModerasiKomentar /></ProtectedRoute>
-          } />
-          <Route path="/admin/statistik/ringkasan" element={
-            <ProtectedRoute><RingkasanStatistik /></ProtectedRoute>
-          } />
-          <Route path="/admin/statistik/berita" element={
-            <ProtectedRoute><StatistikBerita /></ProtectedRoute>
-          } />
-          <Route path="/admin/statistik/jurnalis" element={
-            <ProtectedRoute><StatistikJurnalis /></ProtectedRoute>
-          } />
+          {/* Dashboard & Berita */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/berita/tambah"
+            element={
+              <ProtectedRoute>
+                <TambahBerita />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/berita/daftar"
+            element={
+              <ProtectedRoute>
+                <DaftarBerita />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/berita/kategori"
+            element={
+              <ProtectedRoute>
+                <KategoriBerita />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/berita/jadwal"
+            element={
+              <ProtectedRoute>
+                <JadwalTayang />
+              </ProtectedRoute>
+            }
+          />
 
-          {/* <Route path="/kategori/:slug" element={<Home />} /> */}
+          {/* Moderasi & Statistik */}
+          <Route
+            path="/admin/moderasi-komentar"
+            element={
+              <ProtectedRoute>
+                <ModerasiKomentar />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/statistik/ringkasan"
+            element={
+              <ProtectedRoute>
+                <RingkasanStatistik />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/statistik/berita"
+            element={
+              <ProtectedRoute>
+                <StatistikBerita />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/statistik/jurnalis"
+            element={
+              <ProtectedRoute>
+                <StatistikJurnalis />
+              </ProtectedRoute>
+            }
+          />
 
+          {/* Monetisasi & Iklan */}
+          <Route
+            path="/admin/iklan/slot"
+            element={
+              <ProtectedRoute>
+                <SlotIklan />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/iklan/integrasi"
+            element={
+              <ProtectedRoute>
+                <IntegrasiAdSense />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/iklan/statistik"
+            element={
+              <ProtectedRoute>
+                <StatistikIklan />
+              </ProtectedRoute>
+            }
+          />
 
-          {/* Fallback */}
+          <Route path="/admin/keamanan/sistem" element={<KeamananSistem />} />
+          <Route path="/admin/keamanan/backup" element={<BackupRestore />} />
+
+          {/* Default & 404 */}
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="*" element={<div>404 - Halaman tidak ditemukan</div>} />
         </Routes>

@@ -9,6 +9,7 @@ import {
   FaShieldAlt,
   FaComments,
 } from "react-icons/fa";
+
 const Sidebar = () => {
   const [openMenus, setOpenMenus] = useState({});
   const navigate = useNavigate();
@@ -24,7 +25,10 @@ const Sidebar = () => {
     <div className="w-64 bg-white fixed top-20 left-0 h-[calc(100vh-5rem)] shadow-lg overflow-y-auto">
       <div className="flex flex-col space-y-2 py-4">
         {/* Dashboard */}
-        <button className="px-6 py-2 text-black font-semibold hover:bg-gray-100 text-left w-full">
+        <button
+          className="px-6 py-2 text-black font-semibold hover:bg-gray-100 text-left w-full"
+          onClick={() => navigate("/dashboard")}
+        >
           Dashboard
         </button>
 
@@ -176,11 +180,22 @@ const Sidebar = () => {
           </button>
           {openMenus["iklan"] && (
             <div className="ml-10 flex flex-col space-y-1 text-gray-600">
-              <button className="text-left hover:text-black">Slot Iklan</button>
-              <button className="text-left hover:text-black">
+              <button
+                onClick={() => navigate("/admin/iklan/slot")}
+                className="text-left hover:text-black"
+              >
+                Slot Iklan
+              </button>
+              <button
+                onClick={() => navigate("/admin/iklan/statistik")}
+                className="text-left hover:text-black"
+              >
                 Statistik Iklan
               </button>
-              <button className="text-left hover:text-black">
+              <button
+                onClick={() => navigate("/admin/iklan/integrasi")}
+                className="text-left hover:text-black"
+              >
                 Integrasi AdSense/API
               </button>
             </div>
@@ -204,10 +219,16 @@ const Sidebar = () => {
           </button>
           {openMenus["keamanan"] && (
             <div className="ml-10 flex flex-col space-y-1 text-gray-600">
-              <button className="text-left hover:text-black">
+              <button
+                onClick={() => navigate("/admin/keamanan/sistem")}
+                className="text-left hover:text-black"
+              >
                 Keamanan Sistem
               </button>
-              <button className="text-left hover:text-black">
+              <button
+                onClick={() => navigate("/admin/keamanan/backup")}
+                className="text-left hover:text-black"
+              >
                 Backup Data
               </button>
             </div>
