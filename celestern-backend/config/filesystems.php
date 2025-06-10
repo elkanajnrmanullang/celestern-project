@@ -75,4 +75,14 @@ return [
         public_path('storage') => storage_path('app/public'),
     ],
 
+    'gcs' => [
+    'driver' => 'gcs',
+    'project_id' => env('GOOGLE_CLOUD_PROJECT_ID', 'your-project-id'),
+    'key_file' => env('GOOGLE_APPLICATION_CREDENTIALS', null),
+    'bucket' => env('GOOGLE_CLOUD_BUCKET', 'your-bucket-name'),
+    'path_prefix' => null,
+    'storage_api_uri' => null,
+],
+
+
 ];
