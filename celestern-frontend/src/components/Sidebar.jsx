@@ -22,7 +22,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-64 bg-white fixed top-20 left-0 h-[calc(100vh-5rem)] shadow-lg overflow-y-auto">
+    <div className="w-64 bg-white fixed top-20 left-0 h-[calc(100vh-5rem)] shadow-lg overflow-y-auto z-20">
       <div className="flex flex-col space-y-2 py-4">
         {/* Dashboard */}
         <button
@@ -41,36 +41,20 @@ const Sidebar = () => {
             <span className="flex items-center gap-2">
               <FaRegNewspaper /> Manajemen Berita
             </span>
-            {openMenus["berita"] ? (
-              <ChevronDown size={20} />
-            ) : (
-              <ChevronRight size={20} />
-            )}
+            {openMenus["berita"] ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
           </button>
           {openMenus["berita"] && (
             <div className="ml-10 flex flex-col space-y-1 text-gray-600">
-              <button
-                onClick={() => navigate("/berita/tambah")}
-                className="text-left hover:text-black"
-              >
+              <button onClick={() => navigate("/berita/tambah")} className="text-left hover:text-black">
                 Tambah Berita
               </button>
-              <button
-                onClick={() => navigate("/berita/daftar")}
-                className="text-left hover:text-black"
-              >
+              <button onClick={() => navigate("/berita/daftar")} className="text-left hover:text-black">
                 Daftar Berita
               </button>
-              <button
-                onClick={() => navigate("/berita/kategori")}
-                className="text-left hover:text-black"
-              >
+              <button onClick={() => navigate("/berita/kategori")} className="text-left hover:text-black">
                 Kategori Berita
               </button>
-              <button
-                onClick={() => navigate("/berita/jadwal")}
-                className="text-left hover:text-black"
-              >
+              <button onClick={() => navigate("/berita/jadwal")} className="text-left hover:text-black">
                 Jadwal Tayang
               </button>
             </div>
@@ -94,30 +78,17 @@ const Sidebar = () => {
             <span className="flex items-center gap-2">
               <FaUsers /> Manajemen Pengguna
             </span>
-            {openMenus["pengguna"] ? (
-              <ChevronDown size={20} />
-            ) : (
-              <ChevronRight size={20} />
-            )}
+            {openMenus["pengguna"] ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
           </button>
           {openMenus["pengguna"] && (
             <div className="ml-10 flex flex-col space-y-1 text-gray-600">
-              <button
-                onClick={() => navigate("/admin/pengguna/daftar")}
-                className="text-left hover:text-black"
-              >
+              <button onClick={() => navigate("/admin/pengguna/daftar")} className="text-left hover:text-black">
                 Daftar Pengguna
               </button>
-              <button
-                onClick={() => navigate("/admin/pengguna/tambah")}
-                className="text-left hover:text-black"
-              >
+              <button onClick={() => navigate("/admin/pengguna/tambah")} className="text-left hover:text-black">
                 Tambah Admin/Jurnalis
               </button>
-              <button
-                onClick={() => navigate("/admin/pengguna/akses")}
-                className="text-left hover:text-black"
-              >
+              <button onClick={() => navigate("/admin/pengguna/akses")} className="text-left hover:text-black">
                 Pengaturan Akses
               </button>
             </div>
@@ -133,30 +104,17 @@ const Sidebar = () => {
             <span className="flex items-center gap-2">
               <FaChartBar /> Statistik & Analitik
             </span>
-            {openMenus["statistik"] ? (
-              <ChevronDown size={20} />
-            ) : (
-              <ChevronRight size={20} />
-            )}
+            {openMenus["statistik"] ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
           </button>
           {openMenus["statistik"] && (
             <div className="ml-10 flex flex-col space-y-1 text-gray-600">
-              <button
-                onClick={() => navigate("/admin/statistik/ringkasan")}
-                className="text-left hover:text-black"
-              >
+              <button onClick={() => navigate("/admin/statistik/ringkasan")} className="text-left hover:text-black">
                 Ringkasan Statistik
               </button>
-              <button
-                onClick={() => navigate("/admin/statistik/berita")}
-                className="text-left hover:text-black"
-              >
+              <button onClick={() => navigate("/admin/statistik/berita")} className="text-left hover:text-black">
                 Statistik Berita
               </button>
-              <button
-                onClick={() => navigate("/admin/statistik/jurnalis")}
-                className="text-left hover:text-black"
-              >
+              <button onClick={() => navigate("/admin/statistik/jurnalis")} className="text-left hover:text-black">
                 Statistik Jurnalis
               </button>
             </div>
@@ -172,30 +130,17 @@ const Sidebar = () => {
             <span className="flex items-center gap-2">
               <FaMoneyBillWave /> Monetisasi & Iklan
             </span>
-            {openMenus["iklan"] ? (
-              <ChevronDown size={20} />
-            ) : (
-              <ChevronRight size={20} />
-            )}
+            {openMenus["iklan"] ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
           </button>
           {openMenus["iklan"] && (
             <div className="ml-10 flex flex-col space-y-1 text-gray-600">
-              <button
-                onClick={() => navigate("/admin/iklan/slot")}
-                className="text-left hover:text-black"
-              >
+              <button onClick={() => navigate("/admin/iklan/slot")} className="text-left hover:text-black">
                 Slot Iklan
               </button>
-              <button
-                onClick={() => navigate("/admin/iklan/statistik")}
-                className="text-left hover:text-black"
-              >
+              <button onClick={() => navigate("/admin/iklan/statistik")} className="text-left hover:text-black">
                 Statistik Iklan
               </button>
-              <button
-                onClick={() => navigate("/admin/iklan/integrasi")}
-                className="text-left hover:text-black"
-              >
+              <button onClick={() => navigate("/admin/iklan/integrasi")} className="text-left hover:text-black">
                 Integrasi AdSense/API
               </button>
             </div>
@@ -211,24 +156,14 @@ const Sidebar = () => {
             <span className="flex items-center gap-2">
               <FaShieldAlt /> Keamanan & Backup
             </span>
-            {openMenus["keamanan"] ? (
-              <ChevronDown size={20} />
-            ) : (
-              <ChevronRight size={20} />
-            )}
+            {openMenus["keamanan"] ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
           </button>
           {openMenus["keamanan"] && (
             <div className="ml-10 flex flex-col space-y-1 text-gray-600">
-              <button
-                onClick={() => navigate("/admin/keamanan/sistem")}
-                className="text-left hover:text-black"
-              >
+              <button onClick={() => navigate("/admin/keamanan/sistem")} className="text-left hover:text-black">
                 Keamanan Sistem
               </button>
-              <button
-                onClick={() => navigate("/admin/keamanan/backup")}
-                className="text-left hover:text-black"
-              >
+              <button onClick={() => navigate("/admin/keamanan/backup")} className="text-left hover:text-black">
                 Backup Data
               </button>
             </div>

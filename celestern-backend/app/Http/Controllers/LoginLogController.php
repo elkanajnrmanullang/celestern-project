@@ -7,9 +7,14 @@ use Illuminate\Http\Request;
 
 class LoginLogController extends Controller
 {
+    /**
+     * Menampilkan semua log login admin terbaru.
+     */
     public function index()
     {
-        $logs = LoginLog::with('admin')->latest()->get();
+        // Ambil log login terbaru tanpa relasi karena tidak ada foreign key ke tabel admin
+        $logs = LoginLog::latest()->get();
+
         return response()->json($logs);
     }
 }

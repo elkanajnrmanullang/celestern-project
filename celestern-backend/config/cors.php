@@ -13,19 +13,14 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'], // Menentukan jalur API yang dapat menerima CORS
-
-    'allowed_methods' => ['*'], // Semua metode HTTP diizinkan
-
-    'allowed_origins' => ['http://localhost:3000'], // Frontend React kamu yang berjalan di localhost:3000
-
-    'allowed_origins_patterns' => [], // Aturan pencocokan asal jika diperlukan
-
-    'allowed_headers' => ['*'], // Izinkan semua header
-
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'allowed_methods' => ['*'],
+    'allowed_origins' => ['http://localhost:3000'],
+    'allowed_origins_patterns' => [],
+    'allowed_headers' => ['*'],
     'exposed_headers' => [],
-
     'max_age' => 0,
+    'supports_credentials' => false,
 
-    'supports_credentials' => false, // Cek apakah cookies diperlukan untuk CORS
+
 ];

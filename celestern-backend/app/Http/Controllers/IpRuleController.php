@@ -7,21 +7,40 @@ use Illuminate\Http\Request;
 
 class IpRuleController extends Controller
 {
+    /**
+     * Menampilkan semua IP yang diblokir
+     */
     public function index()
     {
-        return IpRule::all();
+        return IpRule::where('type', 'block')->orderBy('created_at', 'desc')->get();
     }
 
+    /**
+     * Menambahkan IP ke daftar blokir
+     */
     public function store(Request $request)
     {
         $request->validate([
-            'ip_address' => 'required|ip|unique:ip_rules',
-            'type' => 'required|in:block,whitelist',
+            'ip' => 'required|ip',
         ]);
 
-        return IpRule::create($request->only('ip_address', 'type'));
+        // Cegah duplikasi berdasarkan IP (tidak berdasarkan type)
+        $existing = IpRule::where('ip_address', $request->ip)->first();
+
+        if (!$existing) {
+            IpRule::create([
+                'ip_address' => $request->ip,
+                'type' => 'block'
+            ]);
+            return response()->json(['message' => 'IP berhasil diblokir'], 201);
+        }
+
+        return response()->json(['message' => 'IP sudah ada di daftar'], 200);
     }
 
+    /**
+     * Menghapus IP dari daftar blokir
+     */
     public function destroy($id)
     {
         $ip = IpRule::findOrFail($id);

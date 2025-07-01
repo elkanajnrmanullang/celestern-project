@@ -9,9 +9,12 @@ return new class extends Migration {
     {
         Schema::create('ip_rules', function (Blueprint $table) {
             $table->id();
-            $table->string('ip_address')->unique();
+            $table->string('ip_address', 45)->unique(); // mendukung IPv6
             $table->enum('type', ['block', 'whitelist'])->default('block');
             $table->timestamps();
+
+            // indeks tambahan untuk pencarian cepat
+            $table->index(['type']);
         });
     }
 

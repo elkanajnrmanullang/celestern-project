@@ -6,7 +6,7 @@ import {
   FaTiktok,
   FaEnvelope,
 } from "react-icons/fa6";
-import logo from "../../assets/logo_TCT_PortalBerita (2).png";
+import logo from "../assets/logo_TCT_PortalBerita.png";
 
 const Footer = () => {
   return (

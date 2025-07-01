@@ -1,32 +1,10 @@
 <?php
 
+use Google\Cloud\Storage\StorageClient;
+
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default Filesystem Disk
-    |--------------------------------------------------------------------------
-    |
-    | Here you may specify the default filesystem disk that should be used
-    | by the framework. The "local" disk, as well as a variety of cloud
-    | based disks are available to your application for file storage.
-    |
-    */
-
     'default' => env('FILESYSTEM_DISK', 'local'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Filesystem Disks
-    |--------------------------------------------------------------------------
-    |
-    | Below you may configure as many filesystem disks as necessary, and you
-    | may even configure multiple disks for the same driver. Examples for
-    | most supported storage drivers are configured here for reference.
-    |
-    | Supported drivers: "local", "ftp", "sftp", "s3"
-    |
-    */
 
     'disks' => [
 
@@ -58,31 +36,17 @@ return [
             'report' => false,
         ],
 
+        'gcs' => [
+            'driver' => 'gcs',
+            'project_id' => env('GOOGLE_CLOUD_PROJECT_ID'),
+            'key_file' => env('GOOGLE_APPLICATION_CREDENTIALS'), // Full path ke .json credential
+            'bucket' => env('GOOGLE_CLOUD_BUCKET'),
+            'path_prefix' => null,
+            'storage_api_uri' => null,
+        ],
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Symbolic Links
-    |--------------------------------------------------------------------------
-    |
-    | Here you may configure the symbolic links that will be created when the
-    | `storage:link` Artisan command is executed. The array keys should be
-    | the locations of the links and the values should be their targets.
-    |
-    */
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
     ],
-
-    'gcs' => [
-    'driver' => 'gcs',
-    'project_id' => env('GOOGLE_CLOUD_PROJECT_ID', 'your-project-id'),
-    'key_file' => env('GOOGLE_APPLICATION_CREDENTIALS', null),
-    'bucket' => env('GOOGLE_CLOUD_BUCKET', 'your-bucket-name'),
-    'path_prefix' => null,
-    'storage_api_uri' => null,
-],
-
-
 ];

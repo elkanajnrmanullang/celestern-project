@@ -7,5 +7,5 @@ module.exports = {
       times: ["'Times New Roman'", "serif"],
     },
   },
-  plugins: [require("@tailwindcss/line-clamp")],
+  plugins: [],
 };

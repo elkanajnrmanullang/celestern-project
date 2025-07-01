@@ -30,24 +30,25 @@ import SlotIklan from "./pages/admin/iklan/SlotIklan";
 import IntegrasiAdSense from "./pages/admin/iklan/IntegrasiAdSense";
 import StatistikIklan from "./pages/admin/iklan/StatistikIklan";
 
-//Keamanan dan Back Up
+// Keamanan & Backup
 import KeamananSistem from "./pages/admin/keamanan/KeamananSistem";
 import BackupRestore from "./pages/admin/keamanan/BackupRestore";
+
+// Manajemen Pengguna
+import DaftarPengguna from "./pages/admin/pengguna/DaftarPengguna";
+import TambahPengguna from "./pages/admin/pengguna/TambahPengguna";
+import PengaturanAkses from "./pages/admin/pengguna/PengaturanAkses";
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Portal Publik */}
-          {/* <Route path="/" element={<Home />} />
-          <Route path="/berita/:slug" element={<Detail />} /> */}
-
-          {/* Auth & Akses */}
+          {/* Auth */}
           <Route path="/login" element={<Login />} />
           <Route path="/akses-ditolak" element={<AksesDitolak />} />
 
-          {/* Dashboard & Berita */}
+          {/* Dashboard */}
           <Route
             path="/dashboard"
             element={
@@ -56,6 +57,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* Manajemen Berita */}
           <Route
             path="/berita/tambah"
             element={
@@ -149,8 +152,49 @@ function App() {
             }
           />
 
-          <Route path="/admin/keamanan/sistem" element={<KeamananSistem />} />
-          <Route path="/admin/keamanan/backup" element={<BackupRestore />} />
+          {/* Keamanan & Backup */}
+          <Route
+            path="/admin/keamanan/sistem"
+            element={
+              <ProtectedRoute>
+                <KeamananSistem />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/keamanan/backup"
+            element={
+              <ProtectedRoute>
+                <BackupRestore />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Manajemen Pengguna */}
+          <Route
+            path="/admin/pengguna/daftar"
+            element={
+              <ProtectedRoute>
+                <DaftarPengguna />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/pengguna/tambah"
+            element={
+              <ProtectedRoute>
+                <TambahPengguna />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/pengguna/akses"
+            element={
+              <ProtectedRoute>
+                <PengaturanAkses />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Default & 404 */}
           <Route path="/" element={<Navigate to="/login" replace />} />

@@ -1,8 +1,8 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import IklanSlot from "./components/IklanSlot";
-import CommentBox from "./components/CommentBox";
-import Footer from "./components/Footer";
+import IklanSlot from "../components/IklanSlot";
+import CommentBox from "../components/CommentBox";
+import Footer from "../components/Footer";
 
 const Detail = () => {
   const { slug } = useParams();
