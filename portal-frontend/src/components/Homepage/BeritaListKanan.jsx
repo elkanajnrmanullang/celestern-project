@@ -1,7 +1,7 @@
 // src/components/BeritaListKanan.jsx
 import React from "react";
 import { Link } from "react-router-dom";
-import thumbnailDummy from "../assets/thumbnail_dummt.png";
+import thumbnailDummy from "../../assets/thumbnail_dummt.png";
 
 export default function BeritaListKanan({ daftarBerita }) {
   return (

@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "../assets/logo_TCT_PortalBerita.png";
-import { useAuth } from "../Auth/AuthContext";
+import logo from "../../assets/logo_TCT_PortalBerita.png";
+import { useAuth } from "../../Auth/AuthContext";
 
 export default function PublicHeader() {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ export default function PublicHeader() {
   }, []);
 
   return (
-    <header className="border-b border-gray-400 pb-4 relative">
+    <header className="pb-4 relative">
       {/* Logo dan Tagline */}
       <div className="flex items-center justify-between px-8 pt-6 relative">
         <div className="text-center w-full">
@@ -91,8 +91,8 @@ export default function PublicHeader() {
               ? "/"
               : `/kategori/${item
                   .toLowerCase()
-                  .replace(/ & /g, "-")
-                  .replace(/\s/g, "-")}`;
+                  .replace(/ & /g, "-and-")
+                  .replace(/\s+/g, "-")}`;
           const isActive = location.pathname === path;
 
           return (
@@ -111,11 +111,12 @@ export default function PublicHeader() {
         })}
       </nav>
 
-      <hr className="border-gray-300 mt-4" />
+      <hr className="border-gray-900 mt-4" />
+      <hr className="border-gray-900 mt-2" />
 
       {/* Search Bar */}
       <div className="w-full px-8 mt-4">
-        <div className="flex items-center w-full border border-gray-400 rounded-full px-4 py-2">
+        <div className="flex items-center w-full border border-gray-900 rounded-full px-4 py-2">
           <input
             type="text"
             placeholder="Cari topik yang anda inginkan di sini ..."
@@ -137,8 +138,6 @@ export default function PublicHeader() {
           </svg>
         </div>
       </div>
-
-      <hr className="border-gray-300 mt-4" />
     </header>
   );
 }

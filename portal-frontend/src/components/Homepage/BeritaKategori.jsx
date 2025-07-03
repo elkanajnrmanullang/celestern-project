@@ -1,17 +1,15 @@
-// src/components/BeritaKategori.jsx
 import React from "react";
 import { Link } from "react-router-dom";
-import thumbnailDummy from "../assets/thumbnail_dummt.png";
+import thumbnailDummy from "../../assets/thumbnail_dummt.png";
 
 export default function BeritaKategori({ kategori, headline, kiri, kanan }) {
   const formatKategori = typeof kategori === "object" ? kategori.nama : kategori;
 
   return (
-    <section className="px-8 mt-12">
+    <section className="px-8">
       {/* Judul dan Garis Horizontal */}
       <div className="flex items-center space-x-4 mb-6">
         <h2 className="text-2xl font-bold">{formatKategori}</h2>
-        <div className="flex-grow border-t border-gray-300 opacity-30"></div>
       </div>
 
       {/* Grid 3 Kolom + Garis Vertikal */}

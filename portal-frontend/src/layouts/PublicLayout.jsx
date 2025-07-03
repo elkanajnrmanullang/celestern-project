@@ -1,6 +1,6 @@
 import React from "react";
-import PublicHeader from "../components/PublicHeader";
-import Footer from "../components/Footer";
+import PublicHeader from "../components/Layout/PublicHeader";
+import Footer from "../components/Layout/Footer";
 
 export default function PublicLayout({ children }) {
   return (
@@ -9,5 +9,5 @@ export default function PublicLayout({ children }) {
       <main>{children}</main>
       <Footer />
     </div>
-  );  
+  );
 }

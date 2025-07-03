@@ -54,4 +54,16 @@ class BeritaController extends Controller
 
         return response()->json(['message' => 'Berita diterbitkan sekarang.']);
     }
+
+    public function getBySlug($slug)
+{
+    $berita = Berita::where('slug', $slug)->first();
+
+    if (!$berita) {
+        return response()->json(['message' => 'Berita tidak ditemukan'], 404);
+    }
+
+    return response()->json($berita);
+}
+
 }

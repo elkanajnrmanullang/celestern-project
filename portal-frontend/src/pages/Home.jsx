@@ -1,10 +1,12 @@
-// src/pages/Home.jsx
 import React, { useState, useEffect } from "react";
 import PublicLayout from "../layouts/PublicLayout";
-import BeritaUtama from "../components/BeritaUtama";
-import BeritaListKanan from "../components/BeritaListKanan";
-import BeritaKategori from "../components/BeritaKategori";
+import BeritaUtama from "../components/Homepage/BeritaUtama";
+import BeritaListKanan from "../components/Homepage/BeritaListKanan";
+import BeritaKategori from "../components/Homepage/BeritaKategori";
 import thumbnailDummy from "../assets/thumbnail_dummt.png";
+import EkonomiBisnisSection from "../components/Homepage/EkonomiBisnisSection";
+import GayaHidupSection from "../components/Homepage/GayaHidupSection";
+import BeritaTerbaruSection from "../components/Homepage/BeritaTerbaruSection";
 
 export default function Home() {
   const [beritaUtama, setBeritaUtama] = useState(null);
@@ -101,7 +103,7 @@ export default function Home() {
   return (
     <PublicLayout>
       {/* Headline dan List Kanan */}
-      <div className="grid grid-cols-[1.2fr_1fr] gap-4 px-8 border-t border-gray-300 pt-6">
+      <div className="grid grid-cols-[1.2fr_1fr] gap-4 px-8 pt-">
         <BeritaUtama berita={beritaUtama} />
         <div className="space-y-6">
           <BeritaListKanan daftarBerita={beritaKanan} />
@@ -124,6 +126,10 @@ export default function Home() {
           kanan={kategoriPolitik.kanan}
         />
       )}
+
+      <EkonomiBisnisSection />
+      <GayaHidupSection />
+      <BeritaTerbaruSection />
     </PublicLayout>
   );
 }
