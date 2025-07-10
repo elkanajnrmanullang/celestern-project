@@ -11,52 +11,45 @@ import { useAuth } from "../Auth/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login: loginContext } = useAuth(); 
+  const { login: loginContext } = useAuth();
 
   const login = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      try {
-        // 1. Ambil data user dari Google
-        const res = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
-          headers: {
-            Authorization: `Bearer ${tokenResponse.access_token}`,
-          },
-        });
+  onSuccess: async (tokenResponse) => {
+    console.log("Google Token Response:", tokenResponse);
 
-        const profile = res.data;
+    try {
+      const res = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+        headers: {
+          Authorization: `Bearer ${tokenResponse.access_token}`,
+        },
+      });
 
-        // 2. Kirim ke backend Laravel
-        const backendRes = await axios.post(
-          `${import.meta.env.VITE_API_URL}/api/user-login`,
-          {
-            name: profile.name,
-            email: profile.email,
-            picture: profile.picture,
-          }
-        );
+      const profile = res.data;
+      console.log("Google Profile:", profile);
 
-        const userData = backendRes.data?.user;
-
-        // 3. Simpan ke context + localStorage
-        if (backendRes.status === 200 && userData) {
-          loginContext(userData); // ✅ simpan ke context
-          toast.success("Login berhasil!");
-          setTimeout(() => {
-            navigate("/"); // ✅ Tidak perlu reload, Header akan update otomatis
-          }, 1000);
-        } else {
-          toast.error("Login gagal: respons server tidak sesuai.");
-          console.error("Login Backend Response:", backendRes);
+      const backendRes = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/user-login`,
+        {
+          name: profile.name,
+          email: profile.email,
+          picture: profile.picture,
         }
-      } catch (err) {
-        console.error("Login Error:", err);
-        toast.error("Gagal mengambil atau menyimpan data user.");
+      );
+
+      console.log("Backend Response:", backendRes.data);
+
+    } catch (err) {
+      if (err.response) {
+        console.error("Backend Error Response:", err.response.data);
+      } else if (err.request) {
+        console.error("No response from backend:", err.request);
+      } else {
+        console.error("Axios Error:", err.message);
       }
-    },
-    onError: () => {
-      toast.error("Login gagal. Silakan coba lagi.");
-    },
-  });
+    }
+  }
+});
+
 
   return (
     <div
@@ -65,7 +58,12 @@ export default function Login() {
     >
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-0" />
       <div className="z-10 text-center px-6 py-10 w-full flex flex-col items-center">
-        <img src={logo} alt="TCT Logo" style={{ width: "233px", height: "189px" }} className="mb-3" />
+        <img
+          src={logo}
+          alt="TCT Logo"
+          style={{ width: "233px", height: "189px" }}
+          className="mb-3"
+        />
         <div style={{ width: "881px", height: "135px" }} className="mb-8">
           <h1
             style={{
@@ -90,7 +88,9 @@ export default function Login() {
             From Nusantara to The Globe, Without Limits
           </p>
         </div>
-        <h2 className="text-4xl font-bold mt-4 mb-2 text-white">Sign Into Your TCT Account</h2>
+        <h2 className="text-4xl font-bold mt-4 mb-2 text-white">
+          Sign Into Your TCT Account
+        </h2>
         <p className="text-base italic mb-6 text-white">
           "Stay informed. Stay ahead. The Celestern Times."
         </p>

@@ -5,11 +5,15 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
+
 
 class GoogleUserController extends Controller
 {
     public function store(Request $request)
     {
+        Log::info('Google login request received:', $request->all());
+
         $request->validate([
             'email' => 'required|email',
             'name' => 'required|string',

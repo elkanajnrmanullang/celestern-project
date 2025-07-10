@@ -90,5 +90,6 @@ use App\Http\Controllers\Api\GoogleUserController;
 
 Route::post('/user-login', [GoogleUserController::class, 'store']);
 
+
 // PAGE DETAIL - SLUG
 Route::get('/berita-by-slug/{slug}', [BeritaController::class, 'getBySlug']);
