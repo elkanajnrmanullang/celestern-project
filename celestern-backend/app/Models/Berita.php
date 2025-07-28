@@ -9,27 +9,39 @@ class Berita extends Model
 {
     use HasFactory;
 
-    protected $table = 'beritas'; // Pastikan nama tabel cocok
+    protected $table = 'beritas';
+
     protected $fillable = [
         'judul',
         'slug',
-        'tag',
-        'penulis',
-        'kategori',
-        'gambar',
         'isi',
+        'kategori_id',
+        'user_id',
+        'cover_image',
         'status',
-        'tanggal_terbit',
+        'jadwal_terbit',
         'views'
+    ];
+
+    protected $casts = [
+        'jadwal_terbit' => 'datetime',
     ];
 
     public function kategori()
     {
-        return $this->belongsTo(Kategori::class, 'kategori', 'id');
+        return $this->belongsTo(Kategori::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function komentars()
     {
         return $this->hasMany(Komentar::class);
     }
+
+    // Hapus fungsi gambar karena salah asosiasi.
+    // Jika ingin menyimpan banyak gambar, gunakan relasi ke model BeritaImage atau sejenis.
 }

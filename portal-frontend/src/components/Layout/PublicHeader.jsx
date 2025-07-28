@@ -45,9 +45,9 @@ export default function PublicHeader() {
             onClick={() => setDropdownOpen(!dropdownOpen)}
             className="focus:outline-none"
           >
-            {user?.profile_picture ? (
+            {user?.picture ? (
               <img
-                src={user.profile_picture}
+                src={user.picture}
                 alt="User"
                 className="w-10 h-10 rounded-full border border-gray-400"
               />

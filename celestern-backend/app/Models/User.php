@@ -11,11 +11,11 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
-    'name',
-    'email',
-    'profile_picture',
-    'login_type',
-];
+        'name',
+        'email',
+        'picture',
+        'login_type',
+    ];
 
     protected $hidden = [
         'password',
@@ -28,5 +28,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function beritas()
+    {
+        return $this->hasMany(Berita::class);
     }
 }

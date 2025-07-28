@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
-
 class GoogleUserController extends Controller
 {
     public function store(Request $request)
@@ -24,14 +23,19 @@ class GoogleUserController extends Controller
             ['email' => $request->email],
             [
                 'name' => $request->name,
-                'profile_picture' => $request->picture,
+                'profile_picture' => $request->picture, // ✅ simpan ke kolom yang tersedia di DB
                 'login_type' => 'google',
             ]
         );
 
         return response()->json([
             'message' => 'User saved successfully',
-            'user' => $user,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'picture' => $user->profile_picture, // ✅ kirim dalam key 'picture' agar cocok dengan frontend
+            ]
         ]);
     }
 }

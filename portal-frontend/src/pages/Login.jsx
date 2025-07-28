@@ -4,7 +4,7 @@ import logo from "../assets/logo.png";
 import { useGoogleLogin } from "@react-oauth/google";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../api/axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../Auth/AuthContext";
@@ -14,42 +14,50 @@ export default function Login() {
   const { login: loginContext } = useAuth();
 
   const login = useGoogleLogin({
-  onSuccess: async (tokenResponse) => {
-    console.log("Google Token Response:", tokenResponse);
+    onSuccess: async (tokenResponse) => {
+      console.log("Google Token Response:", tokenResponse);
 
-    try {
-      const res = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
-        headers: {
-          Authorization: `Bearer ${tokenResponse.access_token}`,
-        },
-      });
+      try {
+        const res = await axios.get(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${tokenResponse.access_token}`,
+            },
+          }
+        );
 
-      const profile = res.data;
-      console.log("Google Profile:", profile);
+        const profile = res.data;
+        console.log("Google Profile:", profile);
 
-      const backendRes = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/user-login`,
-        {
-          name: profile.name,
-          email: profile.email,
-          picture: profile.picture,
+        const backendRes = await axios.post(
+          `${process.env.REACT_APP_API_URL}/user-login`,
+          {
+            name: profile.name,
+            email: profile.email,
+            picture: profile.picture,
+          }
+        );
+
+        console.log("Backend Response:", backendRes.data);
+
+        if (backendRes?.data?.user) {
+          loginContext(backendRes.data.user);
+          navigate("/");
+        } else {
+          toast.error("Login gagal: tidak ada data user.");
         }
-      );
-
-      console.log("Backend Response:", backendRes.data);
-
-    } catch (err) {
-      if (err.response) {
-        console.error("Backend Error Response:", err.response.data);
-      } else if (err.request) {
-        console.error("No response from backend:", err.request);
-      } else {
-        console.error("Axios Error:", err.message);
+      } catch (err) {
+        if (err.response) {
+          console.error("Backend Error Response:", err.response.data);
+        } else if (err.request) {
+          console.error("No response from backend:", err.request);
+        } else {
+          console.error("Axios Error:", err.message);
+        }
       }
-    }
-  }
-});
-
+    },
+  });
 
   return (
     <div

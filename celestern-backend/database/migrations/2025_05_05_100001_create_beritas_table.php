@@ -13,12 +13,11 @@ return new class extends Migration
             $table->string('judul');
             $table->string('slug')->unique();
             $table->text('isi');
-            $table->string('tag')->nullable();
-            $table->string('penulis');
-            $table->foreignId('kategori_id')->constrained('kategori')->onDelete('cascade');
-            $table->string('gambar')->nullable();
-            $table->enum('status', ['TERTAYANG', 'TERJADWAL'])->default('TERTAYANG');
-            $table->timestamp('tanggal_terbit')->nullable();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('kategori_id')->constrained('kategoris')->onDelete('cascade');
+            $table->string('cover_image')->nullable();
+            $table->enum('status', ['draft', 'published', 'scheduled'])->default('draft');
+            $table->timestamp('jadwal_terbit')->nullable();
             $table->unsignedBigInteger('views')->default(0);
             $table->timestamps();
         });

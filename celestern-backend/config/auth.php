@@ -7,20 +7,15 @@ return [
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
+        'guards' => [
+        'sanctum' => [
+            'driver' => 'sanctum',
             'provider' => 'users',
         ],
 
-        'admin' => [
-            'driver' => 'session',
-            'provider' => 'admins',
-        ],
-
-        'sanctum' => [
+        'api' => [
             'driver' => 'sanctum',
-            'provider' => 'users', // atau 'admins' jika sanctum khusus admin
+            'provider' => 'users',
         ],
     ],
 
