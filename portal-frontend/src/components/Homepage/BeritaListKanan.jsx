@@ -1,4 +1,3 @@
-// src/components/BeritaListKanan.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 import thumbnailDummy from "../../assets/thumbnail_dummt.png";
@@ -24,7 +23,11 @@ export default function BeritaListKanan({ daftarBerita }) {
           </div>
 
           <img
-            src={berita.thumbnail || thumbnailDummy}
+            src={
+              berita.cover_image
+                ? `${process.env.REACT_APP_API_URL}/storage/berita/${berita.cover_image}`
+                : thumbnailDummy
+            }
             alt={berita.judul}
             className="w-20 h-20 object-cover rounded"
           />

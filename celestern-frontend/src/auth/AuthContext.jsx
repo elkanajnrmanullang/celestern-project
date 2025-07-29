@@ -1,33 +1,74 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
+import { toast } from "react-toastify";
+import api from "../api/axios";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // ✅ Tambahkan flag loading
 
-  const login = (username, password) => {
-    if (
-      (username === "admin" && password === "admin123") ||
-      (username === "jurnalis" && password === "jurnalis123")
-    ) {
-      const role = username === "admin" ? "admin" : "jurnalis";
-      const dummyUser = {
-        id: username === "admin" ? 1 : 2, // ID sesuai yang ada di database
-        username,
-        role,
-        token: "DUMMY-TOKEN", // optional kalau sudah pakai Sanctum
-      };
-      setUser(dummyUser);
-      return true;
+  useEffect(() => {
+    const savedUser = localStorage.getItem("auth_user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+    setIsLoading(false); // ✅ Set setelah localStorage dibaca
+  }, []);
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const savedUser = localStorage.getItem("auth_user");
+      setUser(savedUser ? JSON.parse(savedUser) : null);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("auth_user", JSON.stringify(user));
     } else {
+      localStorage.removeItem("auth_user");
+    }
+  }, [user]);
+
+  const login = async (username, password) => {
+    try {
+      const response = await api.post("/admin-login", {
+        username,
+        password,
+      });
+
+      const { token, username, id, role } = response.data;
+
+      const authData = {
+        token,
+        username,
+        id,
+        role,
+      };
+
+      setUser(authData);
+      toast.success("✅ Login berhasil!");
+      return true;
+    } catch (err) {
+      toast.error("❌ Login gagal. Periksa username & password.");
       return false;
     }
   };
 
-  const logout = () => setUser(null);
+  const logout = () => {
+    setUser(null);
+    toast.info("🚪 Logout berhasil.");
+  };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

@@ -11,16 +11,46 @@ use Carbon\Carbon;
 
 class BeritaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
+{
+    $beritas = Berita::with(['kategori', 'user'])
+        ->when($request->query('mode') === 'jadwal', function ($query) {
+            $query->where('status', 'scheduled');
+        })
+        ->when($request->query('status') === 'published', function ($query) {
+            $query->where('status', 'published')
+                  ->where('jadwal_terbit', '<=', now());
+        })
+        ->when($request->query('status') === 'scheduled', function ($query) {
+            $query->where('status', 'scheduled');
+        })
+        ->orderByDesc('created_at')
+        ->paginate(15);
+
+    return response()->json($beritas);
+}
+
+
+    // Endpoint admin GET dengan response format status:data (opsional)
+    public function adminIndex()
     {
-        return Berita::all();
+        $beritas = Berita::with(['kategori', 'user'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $beritas,
+        ]);
     }
 
+    // GET berita by ID
     public function show($id)
     {
         return Berita::findOrFail($id);
     }
 
+    // Tambah berita
     public function store(BeritaStoreRequest $request)
     {
         $validated = $request->validated();
@@ -37,7 +67,7 @@ class BeritaController extends Controller
             : now();
         $berita->kategori_id = $kategori->id;
 
-        // Mapping dari username ke user ID
+        // Cari user berdasarkan username
         $user = User::where('username', $validated['user_id'])->firstOrFail();
         $berita->user_id = $user->id;
 
@@ -51,6 +81,7 @@ class BeritaController extends Controller
         return response()->json(['message' => 'Berita berhasil disimpan'], 201);
     }
 
+    // Update berita
     public function update(Request $request, $id)
     {
         $berita = Berita::findOrFail($id);
@@ -82,12 +113,27 @@ class BeritaController extends Controller
         return response()->json(['message' => 'Berita berhasil diupdate']);
     }
 
+    // Hapus berita
     public function destroy($id)
     {
         $berita = Berita::findOrFail($id);
         $berita->delete();
         return response()->json(null, 204);
     }
+
+    public function cancelSchedule($id)
+{
+    $berita = Berita::findOrFail($id);
+
+    // Hanya batalkan jika masih scheduled
+    if ($berita->status === 'scheduled') {
+        $berita->status = 'draft';
+        $berita->jadwal_terbit = null;
+        $berita->save();
+    }
+
+    return response()->json(['message' => 'Penjadwalan dibatalkan.']);
+}
 
     public function incrementView($id)
     {
@@ -121,6 +167,7 @@ class BeritaController extends Controller
         return response()->json($berita);
     }
 
+    // API publik - detail by slug
     public function getBySlug($slug)
     {
         $berita = Berita::with('user', 'kategori')
@@ -134,6 +181,7 @@ class BeritaController extends Controller
         return response()->json($berita);
     }
 
+    // Terbitkan sekarang
     public function publishNow($id)
     {
         $berita = Berita::findOrFail($id);

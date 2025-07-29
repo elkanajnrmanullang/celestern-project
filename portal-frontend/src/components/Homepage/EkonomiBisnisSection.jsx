@@ -4,46 +4,8 @@ import thumbnailDummy from "../../assets/thumbnail_dummt.png";
 import { truncateWords } from "../../utils/textUtils";
 import RingkasanHarga from "../../components/Layout/RingkasanHarga"; 
 
-export default function EkonomiBisnisSection() {
+export default function EkonomiBisnisSection({ daftarBerita = [] }) {
   const [kategori] = useState("Ekonomi & Bisnis");
-  const [berita, setBerita] = useState([]);
-
-  useEffect(() => {
-    setBerita([
-      {
-        kategori: "Ekonomi & Bisnis",
-        judul: "Gandeng Bank Raya, DPLK BRI Pacu Digitalisasi Dana Pensiun",
-        tanggal: "2025-03-11",
-        isi: "Ketua Pengurus DPLK BRI, Arie Sus Miyanti menegaskan, diluncurkannya fitur BRIFINE di Raya App ini diharapkan dapat mendorong kalangan generasi muda...",
-        thumbnail: thumbnailDummy,
-        slug: "dplk-bri-digitalisasi",
-      },
-      {
-        kategori: "Ekonomi & Bisnis",
-        judul: "Analisis Penyebab IHSG Ambles Nyaris 2%",
-        tanggal: "2025-02-06",
-        isi: "Pelemahan ini terjadi seiring derasnya arus dana asing keluar dari pasar modal RI...",
-        thumbnail: thumbnailDummy,
-        slug: "ihsg-ambles-februari",
-      },
-      {
-        kategori: "Ekonomi & Bisnis",
-        judul: "Saham Tesla ambruk 15,4%, mobil listrik AS tak lagi menarik?",
-        tanggal: "2025-03-12",
-        isi: "Harga saham TSLA bahkan turun hampir 50% dari titik puncaknya...",
-        thumbnail: thumbnailDummy,
-        slug: "tesla-ambruk-2025",
-      },
-      {
-        kategori: "Ekonomi & Bisnis",
-        judul: "Harga Minyak Rebound, Pasar Sorot Tarif AS & OPEC",
-        tanggal: "2025-03-12",
-        isi: "Dalam tiga pekan terakhir, pasar minyak tertekan akibat kebijakan perdagangan Presiden AS...",
-        thumbnail: thumbnailDummy,
-        slug: "harga-minyak-rebound",
-      },
-    ]);
-  }, []);
 
   // Opsional: format tanggal backend ISO → tampilan Indonesia
   const formatTanggal = (tanggalISO) => {
@@ -68,13 +30,13 @@ export default function EkonomiBisnisSection() {
 
       {/* Grid Berita */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {berita.map((item, index) => (
+        {(daftarBerita || []).map((item, index) => (
           <div
             key={index}
-            className={`pr-4 ${index < berita.length - 1 ? "border-r" : ""}`}
+            className={`pr-4 ${index < daftarBerita.length - 1 ? "border-r" : ""}`}
           >
             <img
-              src={item.thumbnail}
+              src={item.thumbnail || thumbnailDummy}
               alt="thumbnail"
               className="w-full h-48 object-cover mb-3"
             />

@@ -1,24 +1,39 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../auth/AuthContext";
 import LogoTCT from "../assets/logo.png";
-import { FaUser, FaLock } from 'react-icons/fa';
+import { FaUser, FaLock } from "react-icons/fa";
+import axios from "../api/axios";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const success = login(username, password);
-    if (success) {
-      navigate("/dashboard");
-    } else {
-      alert("Username atau Password salah!");
+    try {
+      const response = await axios.post("/admin-login", {
+        username,
+        password,
+      });
+
+      const authData = {
+        token: response.data.token,
+        username: response.data.username,
+        role: response.data.role,
+        id: response.data.id,
+      };
+
+      console.log("✅ Login berhasil, menyimpan ke localStorage:", authData); 
+
+      localStorage.setItem("auth_user", JSON.stringify(authData));
+
+      window.location.replace("/dashboard");
+    } catch (error) {
+      alert(
+        "Login gagal: " + (error?.response?.data?.message || "Server error")
+      );
     }
   };
 
@@ -26,10 +41,10 @@ const Login = () => {
     <div
       className="min-h-screen flex flex-col items-center justify-center p-6"
       style={{
-        background: "linear-gradient(rgb(32, 45, 212) 0%, rgb(0, 51, 102) 67%, #000 100%)",
+        background:
+          "linear-gradient(rgb(32, 45, 212) 0%, rgb(0, 51, 102) 67%, #000 100%)",
       }}
     >
-      {/* Logo + Title */}
       <div className="flex items-center mb-6">
         <img src={LogoTCT} alt="Logo TCT" className="w-30 h-20 mr-4" />
         <h1
@@ -40,10 +55,8 @@ const Login = () => {
         </h1>
       </div>
 
-      {/* Welcome Message */}
       <h2 className="text-white text-2xl mb-8">- Welcome to Admin Panel -</h2>
 
-      {/* Form */}
       <form
         onSubmit={handleSubmit}
         className="bg-gray-200 p-8 rounded-lg shadow-md w-80"
@@ -58,7 +71,6 @@ const Login = () => {
           </svg>
         </div>
 
-        {/* Username Input */}
         <div className="flex items-center border-b-2 border-black bg-transparent mb-4">
           <FaUser className="text-black mr-2" />
           <input
@@ -71,7 +83,6 @@ const Login = () => {
           />
         </div>
 
-        {/* Password Input */}
         <div className="flex items-center border-b-2 border-black bg-transparent mb-6">
           <FaLock className="text-black mr-2" />
           <input
@@ -84,7 +95,6 @@ const Login = () => {
           />
         </div>
 
-        {/* Login Button */}
         <button
           type="submit"
           className="w-full bg-black text-white py-2 rounded-full hover:bg-white hover:text-black transition font-bold"

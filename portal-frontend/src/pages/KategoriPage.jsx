@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import PublicLayout from "../layouts/PublicLayout";
 import RingkasanHarga from "../components/Layout/RingkasanHarga";
@@ -7,7 +7,7 @@ import BeritaGrid from "../components/Kategori/BeritaGrid";
 import thumbnailDummy from "../assets/thumbnail_dummt.png";
 import BeritaTerbaru from "../components/Kategori/BeritaTerbaru";
 import CelesternWeekly from "../components/Kategori/CelesternWeekly";
-import axios from "axios";
+import api from "../api/axios";
 
 const kategoriMap = {
   politik: "Politik",
@@ -22,19 +22,33 @@ export default function KategoriPage() {
   const { slug } = useParams();
   const [beritaList, setBeritaList] = useState([]);
 
-  const judulKategori = kategoriMap[slug] || "Kategori Tidak Dikenal";
-
-  useEffect(() => {
-    if (slug === "internasional") {
-      fetchFromNewsAPI();
-    } else {
-      fetchFromDummy();
+  const fetchFromBackend = useCallback(async () => {
+    try {
+      const res = await api.get(`/berita/kategori/${slug}`);
+      const mapped = res.data.map((item) => ({
+        id: item.id,
+        judul: item.judul,
+        slug: item.slug,
+        kategori: item.kategori?.nama,
+        tanggal: new Date(item.jadwal_terbit).toLocaleDateString("id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }),
+        isi: item.isi,
+        thumbnail: item.cover_image
+          ? `${process.env.REACT_APP_API_URL}/storage/${item.cover_image}`
+          : thumbnailDummy,
+      }));
+      setBeritaList(mapped);
+    } catch (err) {
+      console.error("Gagal ambil berita kategori:", err);
     }
   }, [slug]);
 
   const fetchFromNewsAPI = async () => {
     try {
-      const res = await axios.get(
+      const res = await fetch(
         `https://newsapi.org/v2/top-headlines?language=en&category=general&pageSize=12`,
         {
           headers: {
@@ -43,7 +57,9 @@ export default function KategoriPage() {
         }
       );
 
-      const mapped = res.data.articles.map((item, index) => ({
+      const data = await res.json();
+
+      const mapped = data.articles.map((item, index) => ({
         id: index,
         judul: item.title,
         slug: null,
@@ -64,37 +80,13 @@ export default function KategoriPage() {
     }
   };
 
-  const fetchFromDummy = () => {
-    setBeritaList([
-      {
-        id: 1,
-        judul: `Menkum: RUU TNI Atur Prajurit Aktif Bisa Isi 14 Kementerian - Lembaga`,
-        slug: "berita-1",
-        kategori: judulKategori,
-        tanggal: "18 Maret 2025",
-        isi: "Pemerintah telah menetapkan bahwa prajurit TNI aktif dapat menduduki jabatan di 14 kementerian dan lembaga...",
-        thumbnail: thumbnailDummy,
-      },
-      {
-        id: 2,
-        judul: `Ridwan Kamil soal Kasus BJB: Saya Tidak Pernah Mendapat Laporan`,
-        slug: "berita-2",
-        kategori: judulKategori,
-        tanggal: "18 Maret 2025",
-        isi: "Ridwan Kamil membantah mengetahui dugaan korupsi di Bank BJB...",
-        thumbnail: thumbnailDummy,
-      },
-      {
-        id: 3,
-        judul: `Trump Akan Bahas Gencatan Senjata Rusia-Ukraina dengan Putin`,
-        slug: "berita-3",
-        kategori: judulKategori,
-        tanggal: "17 Maret 2025",
-        isi: "Donald Trump akan berbicara dengan Vladimir Putin...",
-        thumbnail: thumbnailDummy,
-      },
-    ]);
-  };
+  useEffect(() => {
+    if (slug === "internasional") {
+      fetchFromNewsAPI();
+    } else {
+      fetchFromBackend();
+    }
+  }, [slug, fetchFromBackend]);
 
   const weeklyBerita = beritaList.slice(4, 9).map((b) => ({
     id: b.id,
@@ -109,10 +101,8 @@ export default function KategoriPage() {
         </div>
       )}
 
-      {/* Hero + List Pendukung */}
       <div className="px-8 mt-8">
         <div className="grid md:grid-cols-[2fr_1fr] gap-6">
-          {/* Berita Utama */}
           <div className="p-4">
             <img
               src={beritaList[0]?.thumbnail}
@@ -143,7 +133,6 @@ export default function KategoriPage() {
             </p>
           </div>
 
-          {/* Daftar Pendukung */}
           <div className="flex flex-col space-y-6">
             {beritaList.slice(1, 4).map((berita) => (
               <div key={berita.id} className="border-b pb-4">
@@ -176,20 +165,8 @@ export default function KategoriPage() {
         </div>
       </div>
 
-      {/* Grid Horizontal */}
-      <BeritaGrid
-        berita={beritaList.slice(4, 8).map((b) => ({
-          id: b.id,
-          judul: b.judul,
-          kategori: b.kategori,
-          tanggal: b.tanggal,
-          thumbnail: b.thumbnail,
-          slug: b.slug,
-          url: b.url,
-        }))}
-      />
+      <BeritaGrid berita={beritaList.slice(4, 8)} />
 
-      {/* Terbaru + Weekly */}
       <div className="flex flex-col md:flex-row justify-between gap-10 px-8 mt-12">
         <BeritaTerbaru data={beritaList} />
         <CelesternWeekly data={weeklyBerita} />

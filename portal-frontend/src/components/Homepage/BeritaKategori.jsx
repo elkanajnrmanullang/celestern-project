@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import thumbnailDummy from "../../assets/thumbnail_dummt.png";
 
 export default function BeritaKategori({ kategori, headline, kiri, kanan }) {
-  const formatKategori = typeof kategori === "object" ? kategori.nama : kategori;
+  const formatKategori =
+    typeof kategori === "object" ? kategori.nama : kategori;
 
   return (
     <section className="px-8">
@@ -22,13 +23,21 @@ export default function BeritaKategori({ kategori, headline, kiri, kanan }) {
           {kiri.map((berita, index) => (
             <div key={index} className="mb-6">
               <img
-                src={berita.thumbnail || thumbnailDummy}
+                src={
+                  berita.cover_image
+                    ? `${process.env.REACT_APP_API_URL}/storage/berita/${berita.cover_image}`
+                    : thumbnailDummy
+                }
                 alt={berita.judul}
                 className="w-full h-40 object-cover mb-2"
               />
-              <p className="text-sm italic text-gray-700">{berita.kategori?.nama || berita.kategori}</p>
+              <p className="text-sm italic text-gray-700">
+                {berita.kategori?.nama || berita.kategori}
+              </p>
               <Link to={`/berita/${berita.slug}`}>
-                <h3 className="text-md font-bold leading-snug hover:underline">{berita.judul}</h3>
+                <h3 className="text-md font-bold leading-snug hover:underline">
+                  {berita.judul}
+                </h3>
               </Link>
               <p className="text-sm text-gray-500">{berita.tanggal}</p>
               <p className="text-sm text-gray-700 mt-1">{berita.isi}</p>
@@ -36,19 +45,29 @@ export default function BeritaKategori({ kategori, headline, kiri, kanan }) {
           ))}
         </div>
 
-        {/* Kolom Tengah (Headline) - Rata Tengah */}
+        {/* Kolom Tengah (Headline) */}
         <div className="px-4 text-center">
           <img
-            src={headline.thumbnail || thumbnailDummy}
+            src={
+              headline.cover_image
+                ? `${process.env.REACT_APP_API_URL}/storage/berita/${headline.cover_image}`
+                : thumbnailDummy
+            }
             alt={headline.judul}
             className="w-full h-64 object-cover mb-3"
           />
-          <p className="text-base italic text-gray-700">{headline.kategori?.nama || headline.kategori}</p>
+          <p className="text-base italic text-gray-700">
+            {headline.kategori?.nama || headline.kategori}
+          </p>
           <Link to={`/berita/${headline.slug}`}>
-            <h1 className="text-3xl font-bold mt-1 hover:underline">{headline.judul}</h1>
+            <h1 className="text-3xl font-bold mt-1 hover:underline">
+              {headline.judul}
+            </h1>
           </Link>
           <p className="text-sm text-gray-500 mt-1">{headline.tanggal}</p>
-          <p className="text-md text-gray-800 mt-3 leading-relaxed">{headline.isi}</p>
+          <p className="text-md text-gray-800 mt-3 leading-relaxed">
+            {headline.isi}
+          </p>
         </div>
 
         {/* Kolom Kanan */}
@@ -56,13 +75,21 @@ export default function BeritaKategori({ kategori, headline, kiri, kanan }) {
           {kanan.map((berita, index) => (
             <div key={index} className="mb-6">
               <img
-                src={berita.thumbnail || thumbnailDummy}
+                src={
+                  berita.cover_image
+                    ? `${process.env.REACT_APP_API_URL}/storage/berita/${berita.cover_image}`
+                    : thumbnailDummy
+                }
                 alt={berita.judul}
                 className="w-full h-40 object-cover mb-2"
               />
-              <p className="text-sm italic text-gray-700">{berita.kategori?.nama || berita.kategori}</p>
+              <p className="text-sm italic text-gray-700">
+                {berita.kategori?.nama || berita.kategori}
+              </p>
               <Link to={`/berita/${berita.slug}`}>
-                <h3 className="text-md font-bold leading-snug hover:underline">{berita.judul}</h3>
+                <h3 className="text-md font-bold leading-snug hover:underline">
+                  {berita.judul}
+                </h3>
               </Link>
               <p className="text-sm text-gray-500">{berita.tanggal}</p>
               <p className="text-sm text-gray-700 mt-1">{berita.isi}</p>
@@ -72,7 +99,9 @@ export default function BeritaKategori({ kategori, headline, kiri, kanan }) {
       </div>
 
       {/* Slot AdSense */}
-      <div className="bg-yellow-300 text-center font-bold py-16 mt-10">AdSense</div>
+      <div className="bg-yellow-300 text-center font-bold py-16 mt-10">
+        AdSense
+      </div>
     </section>
   );
 }

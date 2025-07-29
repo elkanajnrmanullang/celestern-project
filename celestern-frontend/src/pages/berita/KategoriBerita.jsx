@@ -1,27 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MainLayout from "../../layouts/MainLayout";
-
-const initialKategori = [
-  { id: 1, nama: "Internasional", jumlah: 3 },
-  { id: 2, nama: "Ekonomi & Bisnis", jumlah: 5 },
-  { id: 3, nama: "Teknologi", jumlah: 2 },
-];
+import api from "../../api/axios";
+import { useAuth } from "../../auth/AuthContext";
+import { toast } from "react-toastify";
 
 const KategoriBerita = () => {
-  const [kategoriList, setKategoriList] = useState(initialKategori);
+  const [kategoriList, setKategoriList] = useState([]);
   const [kategoriBaru, setKategoriBaru] = useState("");
   const [editId, setEditId] = useState(null);
   const [editNama, setEditNama] = useState("");
+  const { user } = useAuth();
 
-  const handleTambah = () => {
+  useEffect(() => {
+    fetchKategori();
+  }, []);
+
+  const fetchKategori = () => {
+    api
+      .get("/kategori")
+      .then((res) => setKategoriList(res.data))
+      .catch((err) => console.error("❌ Gagal fetch kategori:", err));
+  };
+
+  const handleTambah = async () => {
     if (kategoriBaru.trim()) {
-      const newKategori = {
-        id: Date.now(),
-        nama: kategoriBaru,
-        jumlah: 0,
-      };
-      setKategoriList([...kategoriList, newKategori]);
-      setKategoriBaru("");
+      try {
+        await api.post(
+          "/kategori",
+          { nama: kategoriBaru },
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
+        fetchKategori(); // Fetch ulang dari backend
+        setKategoriBaru("");
+        toast.success("✅ Kategori berhasil ditambahkan.");
+      } catch (err) {
+        toast.error("❌ Gagal tambah kategori.");
+        console.error("POST /kategori error:", err.response?.data || err);
+      }
     }
   };
 
@@ -30,25 +49,50 @@ const KategoriBerita = () => {
     setEditNama(nama);
   };
 
-  const handleSimpanEdit = () => {
-    const updated = kategoriList.map((item) =>
-      item.id === editId ? { ...item, nama: editNama } : item
-    );
-    setKategoriList(updated);
-    setEditId(null);
-    setEditNama("");
+  const handleSimpanEdit = async () => {
+    if (!editNama.trim()) return;
+
+    try {
+      await api.put(
+        `/kategori/${editId}`,
+        { nama: editNama },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      toast.success("✅ Kategori berhasil diubah.");
+      setEditId(null);
+      setEditNama("");
+      fetchKategori();
+    } catch (err) {
+      toast.error("❌ Gagal mengubah kategori.");
+      console.error("PUT /kategori error:", err.response?.data || err);
+    }
   };
 
-  const handleHapus = (id) => {
-    const updated = kategoriList.filter((item) => item.id !== id);
-    setKategoriList(updated);
+  const handleHapus = async (id) => {
+    if (!window.confirm("Yakin ingin menghapus kategori ini?")) return;
+
+    try {
+      await api.delete(`/kategori/${id}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      toast.success("✅ Kategori berhasil dihapus.");
+      fetchKategori();
+    } catch (err) {
+      toast.error("❌ Gagal menghapus kategori.");
+      console.error("DELETE /kategori error:", err.response?.data || err);
+    }
   };
 
   return (
     <MainLayout>
       <h1 className="text-2xl font-bold mb-6">Kategori Berita</h1>
 
-      {/* Tabel Kategori */}
       <table className="w-full table-auto border bg-white shadow-md mb-6">
         <thead>
           <tr className="bg-gray-100 text-left">
@@ -72,7 +116,7 @@ const KategoriBerita = () => {
                   item.nama
                 )}
               </td>
-              <td className="p-3 border">{item.jumlah}</td>
+              <td className="p-3 border">{item.berita_count || 0}</td>
               <td className="p-3 border space-x-2">
                 {editId === item.id ? (
                   <button
@@ -101,7 +145,6 @@ const KategoriBerita = () => {
         </tbody>
       </table>
 
-      {/* Form Tambah Kategori */}
       <div className="bg-white shadow-md p-4 rounded">
         <h2 className="font-semibold mb-2">Tambah Kategori Baru</h2>
         <div className="flex gap-4">

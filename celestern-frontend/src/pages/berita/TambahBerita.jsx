@@ -23,17 +23,40 @@ const TambahBerita = () => {
     cover_image: null,
   });
 
+  const [kategoriList, setKategoriList] = useState([]);
+
+  useEffect(() => {
+    const fetchKategori = async () => {
+      try {
+        const res = await api.get("/kategori", {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        });
+        setKategoriList(res.data);
+      } catch (err) {
+        console.error("❌ Gagal fetch kategori:", err);
+      }
+    };
+
+    if (user?.token) {
+      fetchKategori();
+    }
+  }, [user]);
+
   useEffect(() => {
     if (editData) {
-      setForm((prev) => ({
-        ...prev,
+      setForm({
         judul: editData.judul || "",
         slug: editData.slug || "",
         isi: editData.isi || "",
         kategori: editData.kategori?.nama || "",
         status: editData.status || "published",
-        jadwal_terbit: editData.jadwal_terbit || "",
-      }));
+        jadwal_terbit: editData.jadwal_terbit
+          ? new Date(editData.jadwal_terbit).toISOString().slice(0, 16)
+          : "",
+        cover_image: null,
+      });
     }
   }, [editData]);
 
@@ -74,13 +97,12 @@ const TambahBerita = () => {
       form.status === "scheduled" ? form.jadwal_terbit : ""
     );
     formData.append("cover_image", form.cover_image || "");
-    formData.append("user_id", user.username);
+    formData.append("user_id", user?.username || "");
 
     try {
       await api.post("/admin/berita", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${user.token}`,
         },
       });
 
@@ -94,7 +116,7 @@ const TambahBerita = () => {
         autoClose: 3000,
       });
 
-      navigate("/admin/daftar-berita");
+      navigate("/berita/daftar");
     } catch (err) {
       toast.update(toastId, {
         render: "Gagal menyimpan berita.",
@@ -171,10 +193,11 @@ const TambahBerita = () => {
           required
         >
           <option value="">Pilih Kategori</option>
-          <option value="Internasional">Internasional</option>
-          <option value="Ekonomi & Bisnis">Ekonomi & Bisnis</option>
-          <option value="Budaya">Budaya</option>
-          <option value="Nasional">Nasional</option>
+          {kategoriList.map((item) => (
+            <option key={item.id} value={item.nama}>
+              {item.nama}
+            </option>
+          ))}
         </select>
 
         <textarea
@@ -194,7 +217,6 @@ const TambahBerita = () => {
           className="border border-gray-400 p-2 w-full"
         />
 
-        {/* Status Radio */}
         <div className="flex space-x-6">
           <label className="flex items-center space-x-2">
             <input

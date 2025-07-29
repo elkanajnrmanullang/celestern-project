@@ -22,8 +22,12 @@ use App\Http\Controllers\AdminBeritaController;
 Route::post('/user-login', [GoogleUserController::class, 'store']);
 
 // 📦 CRUD Berita untuk admin (auth:sanctum)
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/admin/berita', [AdminBeritaController::class, 'store']);
+Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
+    Route::get('/berita', [BeritaController::class, 'index']);
+    Route::post('/berita', [BeritaController::class, 'store']);
+    Route::delete('/berita/{id}', [BeritaController::class, 'destroy'])->middleware('auth:sanctum');
+    Route::patch('/berita/{id}/cancel-schedule', [BeritaController::class, 'cancelSchedule'])->middleware('auth:sanctum');
+    
 });
 
 // 📦 Berita publik (tidak perlu login)
@@ -41,13 +45,20 @@ Route::prefix('berita')->group(function () {
     Route::patch('/{id}/publish', [BeritaController::class, 'publishNow'])->middleware('auth:sanctum');
 });
 
+Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
+    Route::get('/berita', [BeritaController::class, 'index']);
+    Route::post('/berita', [BeritaController::class, 'store']);
+});
+Route::patch('/berita/{id}/publish', [BeritaController::class, 'publishNow']);
+
+
 // 📁 Kategori
 Route::get('/kategori', [KategoriController::class, 'index']);
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/kategori', [KategoriController::class, 'store']);
-    Route::put('/kategori/{id}', [KategoriController::class, 'update']);
-    Route::delete('/kategori/{id}', [KategoriController::class, 'destroy']);
-});
+
+Route::get('/kategori', [KategoriController::class, 'index']);
+Route::post('/kategori', [KategoriController::class, 'store']);
+Route::put('/kategori/{id}', [KategoriController::class, 'update']);
+Route::delete('/kategori/{id}', [KategoriController::class, 'destroy']);
 
 // 🖼️ Upload Gambar
 Route::post('/upload-gambar', [UploadController::class, 'upload']);
@@ -62,6 +73,9 @@ Route::prefix('komentar')->group(function () {
     Route::get('/pengaturan', [CommentSettingController::class, 'index']);
     Route::post('/pengaturan', [CommentSettingController::class, 'update']);
 });
+
+Route::post('/admin-login', [AuthController::class, 'manualLogin']);
+
 
 // 📊 Statistik
 Route::prefix('statistik')->group(function () {
